@@ -37,82 +37,229 @@
     3) Incasso
  */
 
+Console.WriteLine("Lavanderia");
 //Inizializzazione lavanderia
 Lavanderia lavanderia = new Lavanderia();
+ProgrammaLavaggio lavaggio = new ProgrammaLavaggio();
+ProgrammaAssciugatrice asciugatrice = new ProgrammaAssciugatrice();
+Console.WriteLine("---- PROVA STAMPA MENU------");
+//Stampo scelte possibili
+Console.WriteLine("Scegli l'operazione digitando il numero corrispondente");
+Console.WriteLine("[1] Stato di utilizzo");
+Console.WriteLine("[2] Dettagli macchina");
+Console.WriteLine("[3] Incasso");
+int sceltaAzione = Convert.ToInt32(Console.ReadLine());
 
-//PROGRAMMA PRINCIPALE
-
-Console.WriteLine("Lavanderia");
-
-lavanderia.StampaMacchine();
-
-public class Macchina
+//scelta azione
+if (sceltaAzione == 1)
 {
-    public bool Acceso { get; set; }
-    public string Marca { get; set; }
-    public string Tipo { get; set; }
-    public string Programma { get; set; }
-    public int DurataProgramma { get; set; }
-    public int DurataRimanente { get; set; }
-    public int QtyDetersivo { get; set; }
-    public int QtyAmmorbidente { get; set; }
-
-    //Asciugatrici
-    public Macchina(bool acceso, string marca, string tipo)
-    {
-        this.Acceso = acceso;
-        this.Marca = marca;
-        this.Tipo = tipo;
-    }
-    //Lavatrici
-    public Macchina(bool acceso, string marca, string tipo, int qtyDetersivo, int qtyAmmorbidente)
-    {
-        this.Acceso = false;
-        this.Marca = marca;
-        this.Tipo = tipo;
-        this.QtyDetersivo = qtyDetersivo;
-        this.QtyAmmorbidente = qtyAmmorbidente;
-    }
+    Console.WriteLine("stato");
 }
+else if (sceltaAzione == 2)
+{
+    Console.WriteLine("dettagli");
+}
+else if(sceltaAzione == 3)
+{
+    lavanderia.Incasso();
+}
+else
+{
+    Console.WriteLine("Scelta non riconosciuta. Riprovare");
+}
+
+//stampa opzioni
+Console.WriteLine("---- PROVA STAMPA LAVAGGI------");
+lavaggio.SceltaLavaggio();
+asciugatrice.NuovaAsciugatura();
 
 public class Lavanderia
 {
-    private Macchina[] lavatrici;
-    private Macchina[] asciugatrice;
     public Lavanderia()
     {
-        //lavatrici
-        lavatrici = new Macchina[5];
-        lavatrici[0] = new Macchina(false, "Bosch" , "lavatrice", 1000, 500);
-        lavatrici[1] = new Macchina(false, "Beko" , "lavatrice", 1000, 500);
-        lavatrici[2] = new Macchina(false, "Lg" , "lavatrice", 1000, 500);
-        lavatrici[3] = new Macchina(false, "Bosch", "lavatrice", 1000, 500);
-        lavatrici[4] = new Macchina(false, "Candy" , "lavatrice", 1000, 500);
-
-        //asciugatrici
-        asciugatrice = new Macchina[5];
-        asciugatrice[0] = new Macchina(false, "Candy", "asciugatrice");
-        asciugatrice[1] = new Macchina(false, "Bosch", "asciugatrice");
-        asciugatrice[2] = new Macchina(false, "Aqualtis", "asciugatrice");
-        asciugatrice[3] = new Macchina(false, "Beko", "asciugatrice");
-        asciugatrice[4] = new Macchina(false, "Electrolux", "asciugatrice");
+        lavatrici = new Lavatrice[5];
+        asciugatrici = new Asciugatrice[5];
+        for (int i = 0; i < 5; i++)
+        {
+            lavatrici[i] = new Lavatrice("Lavatrice" + (i + 1));
+            asciugatrici[i] = new Asciugatrice("Asciugatrice" + (i + 1));
+        }
     }
-
-    public void StampaMacchine()
+    private Lavatrice[] lavatrici;
+    private Asciugatrice[] asciugatrici;
+    public void Incasso()
     {
-        Console.WriteLine("----- Lavatrici -------");
-
+        Console.WriteLine("Incassi:");
+        double incassoTotale = 0;
         for (int i = 0; i < lavatrici.Length; i++)
         {
-            Console.WriteLine("{0} - {1}, {2}, {3}, {4}, {5}", (i + 1), "Acceso: " + lavatrici[i].Acceso,"Marca: " + lavatrici[i].Marca, "Tipo: " + lavatrici[i].Tipo, 
-                "Capacità max in ml: " + lavatrici[i].QtyDetersivo , lavatrici[i].QtyAmmorbidente);
+            Console.WriteLine(lavatrici[i].Nome + ": " + lavatrici[i].IncassoLavatrice() + " euro");
+            Console.WriteLine(asciugatrici[i].Nome + ": " + asciugatrici[i].IncassoAsciugatrice() + " euro");
+            incassoTotale = incassoTotale + lavatrici[i].IncassoLavatrice() + asciugatrici[i].IncassoAsciugatrice();
         }
+        Console.WriteLine("Totale: " + incassoTotale + " euro");
+    }
+}
+public class Lavatrice {
+    public Lavatrice(string nome)
+    {
+        Stato = "Vuota";
+        Gettoni = 0;
+        Detersivo = 1000;
+        Ammorbidente = 500;
+        Nome = nome;
+    }
+    public int Detersivo { get; set; }
+    public int Ammorbidente { get; set; }
+    public int Gettoni { get; set; }
+    public string Stato { get; private set; }
+    public int Tempo { get; private set; }
+    public string Nome { get; set; }
+    
+    public double IncassoLavatrice()
+    {
+        return (double)Gettoni * 0.50;
+    }
+}
+public class ProgrammaLavaggio 
+{
+    public int Detersivo { get; set; }
+    public int Ammorbidente { get; set; }
+    public int Gettoni { get; set; }
+    public string Stato { get; private set; }
+    public int Tempo { get; private set; }
+    public string Nome
+    {
+        get; set;
+    }
 
-        Console.WriteLine("----- Asciugatrici -------");
 
-        for (int i = 0; i < asciugatrice.Length; i++)
+    //Modalità lavaggio
+    private void Rinfrescante()
+    {
+        if (Detersivo - 20 > 0 && Ammorbidente - 5 > 0)
         {
-            Console.WriteLine("{0} - {1}, {2}, {3}", (i + 1), "Acceso: " + asciugatrice[i].Acceso, "Marca: " + asciugatrice[i].Marca, "Tipo: " + asciugatrice[i].Tipo);
+            Detersivo -= 20;
+            Ammorbidente -= 5;
+            Stato = "Lavaggio Rinfrescante";
+            Tempo = 20;
+            Gettoni += 2;
         }
     }
+    private void Rinnovante()
+    {
+        if (Detersivo - 40 > 0 && Ammorbidente - 10 > 0)
+        {
+            Detersivo -= 40;
+            Ammorbidente -= 10;
+            Stato = "Lavaggio Rinnovante";
+            Tempo = 40;
+            Gettoni += 3;
+        }
+    }
+    private void Sgrassante()
+    {
+        if (Detersivo - 60 > 0 && Ammorbidente - 15 > 0)
+        {
+            Detersivo -= 60;
+            Ammorbidente -= 16;
+            Stato = "Lavaggio Sgrassante";
+            Tempo = 60;
+            Gettoni += 4;
+        }
+    }
+
+    //Scelta lavaggio
+    public void SceltaLavaggio()
+    {
+        Console.WriteLine("Digita:");
+        Console.WriteLine("1 - Lavaggio Rinfrescante");
+        Console.WriteLine("2 - Lavaggio Rinnovante");
+        Console.WriteLine("3 - Lavaggio Sgrassante");
+        int sceltaLavaggio = Convert.ToInt32(Console.ReadLine());
+
+        if (sceltaLavaggio == 1)
+        {
+            Rinfrescante();
+        }
+        else if (sceltaLavaggio == 2)
+        {
+            Rinnovante();
+        }
+        else if (sceltaLavaggio == 3)
+        {
+            Sgrassante();
+        }
+        else
+        {
+            Console.WriteLine("Scelta non riconosciuta. Riprovare");
+        }
+
+    }
+
+
+}
+
+
+public class Asciugatrice {
+    public Asciugatrice(string nome)
+    {
+        Stato = "Vuota";
+        Gettoni = 0;
+        Nome = nome;
+    }
+    public int Gettoni { get; set; }
+    public string Stato { get; private set; }
+    public int Tempo { get; private set; }
+    public string Nome { get; set; }
+    
+    public double IncassoAsciugatrice()
+    {
+        return (double)Gettoni * 0.50;
+    }
+}
+//Programma Asciugatrice
+public class ProgrammaAssciugatrice 
+{
+    public int Gettoni { get; set; }
+    public string Stato { get; private set; }
+    public int Tempo { get; private set; }
+    public string Nome { get; set; }
+    private void Rapido()
+    {
+        Stato = "Asciugatura rapida";
+        Tempo = 30;
+        Gettoni += 2;
+    }
+    private void Intenso()
+    {
+        Stato = "Asciugatura intensa";
+        Tempo = 60;
+        Gettoni += 4;
+    }
+
+    public void NuovaAsciugatura()
+    {
+        Console.WriteLine("Digita:");
+        Console.WriteLine("1 - Asciugatura rapida");
+        Console.WriteLine("2 - Asciugatura intensa");
+        int sceltaAsciugatura = Convert.ToInt32(Console.ReadLine());
+
+        if (sceltaAsciugatura == 1)
+        {
+            Rapido();
+        }
+        else if (sceltaAsciugatura == 2)
+        {
+            Intenso();
+        }
+        else
+        {
+            Console.WriteLine("Scelta non riconosciuta. Riprovare");
+        }
+
+    }
+    //incasso asciugatrici
+
+
 }
