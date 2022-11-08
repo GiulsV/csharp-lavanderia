@@ -88,7 +88,6 @@ public class Lavatrice : ILavatrice
         Console.WriteLine("[1] per Lavaggio Rinfrescante");
         Console.WriteLine("[2] per Lavaggio Rinnovante");
         Console.WriteLine("[3] per Lavaggio Sgrassante");
-        //int scelta = Convert.ToInt32(Console.ReadLine());
         Random random = new Random();
         int scelta = random.Next(1, 4);
         if (scelta == 1 || scelta == 2 || scelta == 3)
