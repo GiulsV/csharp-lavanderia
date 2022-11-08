@@ -45,22 +45,9 @@ Cosa può diventare astratto come classe?
 Delle classi astratte identificate, potrebbero esserci metodi astratti?
 Possiamo applicare qualche interfaccia? */
 
-//Interfaccia
-public interface ILavatrice
-{
-    int Ammorbidente { get; set; }
-    int Detersivo { get; set; }
-    int Gettoni { get; set; }
-    string Nome { get; set; }
-    bool Stato { get; }
 
-    bool ControlloStato();
-    void DettagliMacchina();
-    double Incasso();
-    void NuovoLavaggio();
-}
 
-public class Lavatrice : ILavatrice
+public class Lavatrice : Macchina
 {
     public Lavatrice(string nome)
     {
@@ -75,11 +62,7 @@ public class Lavatrice : ILavatrice
         ProgrammiLavaggio[2] = new ProgrammaLavaggio("Lavaggio Sgrassante", 60, 4, 60, 15);
         LavaggioCorrente = new ProgrammaLavaggio("nessuna", 0, 0, 0, 0);
     }
-    public int Detersivo { get; set; }
-    public int Ammorbidente { get; set; }
-    public int Gettoni { get; set; }
-    public bool Stato { get; private set; }
-    public string Nome { get; set; }
+
     private ProgrammaLavaggio[] ProgrammiLavaggio;
     public ProgrammaLavaggio LavaggioCorrente;
     public void NuovoLavaggio()
@@ -109,7 +92,9 @@ public class Lavatrice : ILavatrice
         else
             Console.WriteLine("Digitato numero errato");
     }
-    public bool ControlloStato()
+    //override ControlloStato
+
+    public override bool ControlloStato()
     {
         if (!Stato)
         {
@@ -140,7 +125,7 @@ public class Lavatrice : ILavatrice
         Console.WriteLine("Ammorbidente rimanente: " + Ammorbidente + "ml");
         Console.WriteLine("Tempo alla fine del lavaggio: " + LavaggioCorrente.TempoRimanente);
     }
-    public double Incasso()
+    public override double Incasso()
     {
         return (double)Gettoni * 0.50;
     }

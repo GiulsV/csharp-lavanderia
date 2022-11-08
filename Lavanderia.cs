@@ -102,7 +102,7 @@ public class Lavanderia
         }
         Console.WriteLine("Totale: " + incassoTotale + "$");
     }
-    public void ProgrammaLavaggio()
+    public  void ProgrammaLavaggioC()
     {
         for (int i = 0; i < lavatrici.Length; i++)
         {
@@ -113,7 +113,7 @@ public class Lavanderia
             }
         }
     }
-    public void ProgrammaAsciugatrici()
+    public  void ProgrammaAsciugatrici()
     {
         for (int i = 0; i < asciugatrici.Length; i++)
         {

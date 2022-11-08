@@ -72,7 +72,7 @@ do
             lavanderia.DettagliMacchina(macchina, numero);
             break;
         case 3:
-            lavanderia.ProgrammaLavaggio();
+            lavanderia.ProgrammaLavaggioC();
             break;
         case 4:
             lavanderia.ProgrammaAsciugatrici();

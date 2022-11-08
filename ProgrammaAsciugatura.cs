@@ -45,15 +45,8 @@ Cosa può diventare astratto come classe?
 Delle classi astratte identificate, potrebbero esserci metodi astratti?
 Possiamo applicare qualche interfaccia? */
 
-public interface IProgrammaAsciugatura
-{
-    int Costo { get; set; }
-    string Nome { get; set; }
-    int Tempo { get; set; }
-    int TempoRimanente { get; set; }
-}
 
-public class ProgrammaAsciugatura : IProgrammaAsciugatura
+public class ProgrammaAsciugatura : ProgrammaMacchina
 {
     public ProgrammaAsciugatura(string nome, int tempo, int costo)
     {
@@ -62,8 +55,5 @@ public class ProgrammaAsciugatura : IProgrammaAsciugatura
         Nome = nome;
         Costo = costo;
     }
-    public int Tempo { get; set; }
-    public int TempoRimanente { get; set; }
-    public string Nome { get; set; }
-    public int Costo { get; set; }
+
 }

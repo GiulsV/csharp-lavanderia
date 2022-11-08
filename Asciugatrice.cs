@@ -45,21 +45,10 @@ Cosa può diventare astratto come classe?
 Delle classi astratte identificate, potrebbero esserci metodi astratti?
 Possiamo applicare qualche interfaccia? */
 
-//Interfaccia
 
-public interface IAsciugatrice
-{
-    int Gettoni { get; set; }
-    string Nome { get; set; }
-    bool Stato { get; }
 
-    bool ControlloStato();
-    void DettagliMacchina();
-    double Incasso();
-    void NuovaAsciugatura();
-}
 
-public class Asciugatrice : IAsciugatrice
+public class Asciugatrice : Macchina
 {
     public Asciugatrice(string nome)
     {
@@ -71,9 +60,7 @@ public class Asciugatrice : IAsciugatrice
         programmiAsciugatura[1] = new ProgrammaAsciugatura("Asciugatura intensa", 60, 4);
         asciugaturaCorrente = new ProgrammaAsciugatura("nessuna", 0, 0);
     }
-    public int Gettoni { get; set; }
-    public bool Stato { get; private set; }
-    public string Nome { get; set; }
+
     private ProgrammaAsciugatura[] programmiAsciugatura;
     public ProgrammaAsciugatura asciugaturaCorrente;
     public void NuovaAsciugatura()
@@ -96,7 +83,10 @@ public class Asciugatrice : IAsciugatrice
         else
             Console.WriteLine("Errore. Riprova");
     }
-    public bool ControlloStato()
+
+    //override ControlloStato
+    
+    public override bool ControlloStato()
     {
         if (!Stato)
         {
@@ -126,7 +116,7 @@ public class Asciugatrice : IAsciugatrice
         Console.WriteLine("Stato: " + stato);
         Console.WriteLine("Tempo alla fine dell'asciugatura: " + asciugaturaCorrente.TempoRimanente);
     }
-    public double Incasso()
+    public override double Incasso()
     {
         return (double)Gettoni * 0.50;
     }
