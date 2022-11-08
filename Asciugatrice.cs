@@ -61,6 +61,10 @@ public class Asciugatrice : Macchina
         asciugaturaCorrente = new ProgrammaAsciugatura("nessuna", 0, 0);
     }
 
+    public int Gettoni { get; set; }
+    public bool Stato { get; private set; }
+    public string Nome { get; set; }
+
     private ProgrammaAsciugatura[] programmiAsciugatura;
     public ProgrammaAsciugatura asciugaturaCorrente;
     public void NuovaAsciugatura()
@@ -68,8 +72,7 @@ public class Asciugatrice : Macchina
         Console.WriteLine("Digita:");
         Console.WriteLine("[1] per Asciugatura rapida");
         Console.WriteLine("[2] per Asciugatura intensa");
-        Random random = new Random();
-        int scelta = random.Next(1, 3);
+        int scelta = Convert.ToInt32(Console.ReadLine());
         if (scelta == 1 || scelta == 2)
         {
             asciugaturaCorrente.Nome = programmiAsciugatura[scelta - 1].Nome;
@@ -78,15 +81,15 @@ public class Asciugatrice : Macchina
             asciugaturaCorrente.Costo = programmiAsciugatura[scelta - 1].Costo;
             Gettoni += asciugaturaCorrente.Costo;
             Stato = false;
+            Console.WriteLine(asciugaturaCorrente.Nome + ", durata " + asciugaturaCorrente.Tempo + ", minuti rimasti " + asciugaturaCorrente.TempoRimanente + ", costo " + asciugaturaCorrente.Costo);
         }
 
         else
-            Console.WriteLine("Errore. Riprova");
+            Console.WriteLine("Digitato numero errato");
     }
 
     //override ControlloStato
-    
-    public override bool ControlloStato()
+    public bool ControlloStato()
     {
         if (!Stato)
         {
@@ -104,7 +107,6 @@ public class Asciugatrice : Macchina
         }
         return Stato;
     }
-
     public void DettagliMacchina()
     {
         string stato;

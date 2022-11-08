@@ -46,7 +46,7 @@ Delle classi astratte identificate, potrebbero esserci metodi astratti?
 Possiamo applicare qualche interfaccia? */
 
 
-public class ProgrammaAsciugatura : ProgrammaMacchina
+public class ProgrammaAsciugatura 
 {
     public ProgrammaAsciugatura(string nome, int tempo, int costo)
     {
@@ -55,5 +55,8 @@ public class ProgrammaAsciugatura : ProgrammaMacchina
         Nome = nome;
         Costo = costo;
     }
-
+    public int Tempo { get; set; }
+    public int TempoRimanente { get; set; }
+    public string Nome { get; set; }
+    public int Costo { get; set; }
 }

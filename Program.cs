@@ -45,6 +45,19 @@ Cosa può diventare astratto come classe?
 Delle classi astratte identificate, potrebbero esserci metodi astratti?
 Possiamo applicare qualche interfaccia? */
 
+/*
+ TempoRimanente = new Random().Next(0, ProgrammaInEsecuzione.Durata + 1);
+public void SimulaAvanzamento()
+    {
+        TempoRimanente = new Random().Next(0, TempoRimanente);
+    }
+public void SimulaAvanzamento()
+    {
+        TempoRimanente = new Random().Next(0, TempoRimanente);
+    }
+
+ */
+
 Console.WriteLine("Lavanderia");
 
 Lavanderia lavanderia = new Lavanderia();
@@ -54,7 +67,7 @@ do
     Console.WriteLine("Digita l'azione da eseguire");
     Console.WriteLine("[1] Stato Macchine");
     Console.WriteLine("[2] Dettagli Macchina");
-    Console.WriteLine("[3] Programa Lavatrici");
+    Console.WriteLine("[3] Programma Lavatrici");
     Console.WriteLine("[4] Programma Asciugatrici");
     Console.WriteLine("[5] Incasso");
     Console.WriteLine("[6] Esci");
@@ -72,7 +85,7 @@ do
             lavanderia.DettagliMacchina(macchina, numero);
             break;
         case 3:
-            lavanderia.ProgrammaLavaggioC();
+            lavanderia.ProgrammaLavatrici();
             break;
         case 4:
             lavanderia.ProgrammaAsciugatrici();

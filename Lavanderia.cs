@@ -46,7 +46,7 @@ Delle classi astratte identificate, potrebbero esserci metodi astratti?
 Possiamo applicare qualche interfaccia? */
 
 
-public class Lavanderia
+public class Lavanderia 
 {
     public Lavanderia()
     {
@@ -89,7 +89,7 @@ public class Lavanderia
         else
             asciugatrici[numero - 1].DettagliMacchina();
     }
-    public void Incasso()
+    public  void Incasso()
     {
         
         Console.WriteLine("Incassi:");
@@ -102,7 +102,7 @@ public class Lavanderia
         }
         Console.WriteLine("Totale: " + incassoTotale + "$");
     }
-    public  void ProgrammaLavaggioC()
+    public void ProgrammaLavatrici()
     {
         for (int i = 0; i < lavatrici.Length; i++)
         {
@@ -113,13 +113,14 @@ public class Lavanderia
             }
         }
     }
-    public  void ProgrammaAsciugatrici()
+    public void ProgrammaAsciugatrici()
     {
         for (int i = 0; i < asciugatrici.Length; i++)
         {
             if (asciugatrici[i].ControlloStato())
             {
                 asciugatrici[i].NuovaAsciugatura();
+                break;
             }
         }
     }
