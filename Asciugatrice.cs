@@ -274,45 +274,88 @@ public class ProgrammaAssciugatrice
 }
 */
 
-Console.WriteLine("Lavanderia");
+//Interfaccia
 
-Lavanderia lavanderia = new Lavanderia();
-bool fine = false;
-do
+public interface IAsciugatrice
 {
-    Console.WriteLine("Digita l'azione da eseguire");
-    Console.WriteLine("[1] Stato Macchine");
-    Console.WriteLine("[2] Dettagli Macchina");
-    Console.WriteLine("[3] Programa Lavatrici");
-    Console.WriteLine("[4] Programma Asciugatrici");
-    Console.WriteLine("[5] Incasso");
-    Console.WriteLine("[6] Esci");
-    int scelta = Convert.ToInt32(Console.ReadLine());
-    switch (scelta)
+    int Gettoni { get; set; }
+    string Nome { get; set; }
+    bool Stato { get; }
+
+    bool ControlloStato();
+    void DettagliMacchina();
+    double Incasso();
+    void NuovaAsciugatura();
+}
+
+public class Asciugatrice : IAsciugatrice
+{
+    public Asciugatrice(string nome)
     {
-        case 1:
-            lavanderia.StatoMacchine();
-            break;
-        case 2:
-            Console.WriteLine("Digita [L] per lavatrice o [A] per asciugatrice");
-            string macchina = Console.ReadLine();
-            Console.WriteLine("Digita il numero della macchina da [1] a [5]");
-            int numero = Convert.ToInt32(Console.ReadLine());
-            lavanderia.DettagliMacchina(macchina, numero);
-            break;
-        case 3:
-            lavanderia.ProgrammaLavaggio();
-            break;
-        case 4:
-            lavanderia.ProgrammaAsciugatrici();
-            break;
-        case 5:
-            lavanderia.Incasso();
-            break;
-        default:
-            fine = true;
-            break;
+        Stato = true;
+        Gettoni = 0;
+        Nome = nome;
+        programmiAsciugatura = new ProgrammaAsciugatura[2];
+        programmiAsciugatura[0] = new ProgrammaAsciugatura("Asciugatura rapida", 30, 2);
+        programmiAsciugatura[1] = new ProgrammaAsciugatura("Asciugatura intensa", 60, 4);
+        asciugaturaCorrente = new ProgrammaAsciugatura("nessuna", 0, 0);
     }
-} while (!fine);
+    public int Gettoni { get; set; }
+    public bool Stato { get; private set; }
+    public string Nome { get; set; }
+    private ProgrammaAsciugatura[] programmiAsciugatura;
+    public ProgrammaAsciugatura asciugaturaCorrente;
+    public void NuovaAsciugatura()
+    {
+        Console.WriteLine("Digita:");
+        Console.WriteLine("[1] per Asciugatura rapida");
+        Console.WriteLine("[2] per Asciugatura intensa");
+        Random random = new Random();
+        int scelta = random.Next(1, 3);
+        if (scelta == 1 || scelta == 2)
+        {
+            asciugaturaCorrente.Nome = programmiAsciugatura[scelta - 1].Nome;
+            asciugaturaCorrente.Tempo = programmiAsciugatura[scelta - 1].Tempo;
+            asciugaturaCorrente.TempoRimanente = programmiAsciugatura[scelta - 1].Tempo;
+            asciugaturaCorrente.Costo = programmiAsciugatura[scelta - 1].Costo;
+            Gettoni += asciugaturaCorrente.Costo;
+            Stato = false;
+        }
 
-
+        else
+            Console.WriteLine("Errore. Riprova");
+    }
+    public bool ControlloStato()
+    {
+        if (!Stato)
+        {
+            Random random = new Random();
+            int finito = random.Next(1, 4);
+            if (finito == 1 || asciugaturaCorrente.TempoRimanente == 0)
+            {
+                asciugaturaCorrente.TempoRimanente = 0;
+                Stato = true;
+            }
+            else
+            {
+                asciugaturaCorrente.TempoRimanente = random.Next(0, asciugaturaCorrente.TempoRimanente);
+            }
+        }
+        return Stato;
+    }
+    public void DettagliMacchina()
+    {
+        string stato;
+        if (ControlloStato())
+            stato = "Vuota";
+        else
+            stato = "In esecuzione";
+        Console.WriteLine("Nome: " + Nome);
+        Console.WriteLine("Stato: " + stato);
+        Console.WriteLine("Tempo alla fine dell'asciugatura: " + asciugaturaCorrente.TempoRimanente);
+    }
+    public double Incasso()
+    {
+        return (double)Gettoni * 0.50;
+    }
+}

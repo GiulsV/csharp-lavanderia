@@ -274,45 +274,31 @@ public class ProgrammaAssciugatrice
 }
 */
 
-Console.WriteLine("Lavanderia");
-
-Lavanderia lavanderia = new Lavanderia();
-bool fine = false;
-do
+public interface IProgrammaLavaggio
 {
-    Console.WriteLine("Digita l'azione da eseguire");
-    Console.WriteLine("[1] Stato Macchine");
-    Console.WriteLine("[2] Dettagli Macchina");
-    Console.WriteLine("[3] Programa Lavatrici");
-    Console.WriteLine("[4] Programma Asciugatrici");
-    Console.WriteLine("[5] Incasso");
-    Console.WriteLine("[6] Esci");
-    int scelta = Convert.ToInt32(Console.ReadLine());
-    switch (scelta)
+    int ConsumoAmmorbidente { get; set; }
+    int ConsumoDetersivo { get; set; }
+    int Costo { get; set; }
+    string Nome { get; set; }
+    int Tempo { get; set; }
+    int TempoRimanente { get; set; }
+}
+
+public class ProgrammaLavaggio : IProgrammaLavaggio
+{
+    public ProgrammaLavaggio(string nome, int tempo, int costo, int consumoDetersivo, int consumoAmmorbidente)
     {
-        case 1:
-            lavanderia.StatoMacchine();
-            break;
-        case 2:
-            Console.WriteLine("Digita [L] per lavatrice o [A] per asciugatrice");
-            string macchina = Console.ReadLine();
-            Console.WriteLine("Digita il numero della macchina da [1] a [5]");
-            int numero = Convert.ToInt32(Console.ReadLine());
-            lavanderia.DettagliMacchina(macchina, numero);
-            break;
-        case 3:
-            lavanderia.ProgrammaLavaggio();
-            break;
-        case 4:
-            lavanderia.ProgrammaAsciugatrici();
-            break;
-        case 5:
-            lavanderia.Incasso();
-            break;
-        default:
-            fine = true;
-            break;
+        Tempo = tempo;
+        TempoRimanente = 0;
+        Nome = nome;
+        Costo = costo;
+        ConsumoDetersivo = consumoDetersivo;
+        ConsumoAmmorbidente = consumoAmmorbidente;
     }
-} while (!fine);
-
-
+    public int Tempo { get; set; }
+    public int TempoRimanente { get; set; }
+    public string Nome { get; set; }
+    public int Costo { get; set; }
+    public int ConsumoDetersivo { get; set; }
+    public int ConsumoAmmorbidente { get; set; }
+}

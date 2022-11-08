@@ -274,45 +274,82 @@ public class ProgrammaAssciugatrice
 }
 */
 
-Console.WriteLine("Lavanderia");
 
-Lavanderia lavanderia = new Lavanderia();
-bool fine = false;
-do
+public class Lavanderia
 {
-    Console.WriteLine("Digita l'azione da eseguire");
-    Console.WriteLine("[1] Stato Macchine");
-    Console.WriteLine("[2] Dettagli Macchina");
-    Console.WriteLine("[3] Programa Lavatrici");
-    Console.WriteLine("[4] Programma Asciugatrici");
-    Console.WriteLine("[5] Incasso");
-    Console.WriteLine("[6] Esci");
-    int scelta = Convert.ToInt32(Console.ReadLine());
-    switch (scelta)
+    public Lavanderia()
     {
-        case 1:
-            lavanderia.StatoMacchine();
-            break;
-        case 2:
-            Console.WriteLine("Digita [L] per lavatrice o [A] per asciugatrice");
-            string macchina = Console.ReadLine();
-            Console.WriteLine("Digita il numero della macchina da [1] a [5]");
-            int numero = Convert.ToInt32(Console.ReadLine());
-            lavanderia.DettagliMacchina(macchina, numero);
-            break;
-        case 3:
-            lavanderia.ProgrammaLavaggio();
-            break;
-        case 4:
-            lavanderia.ProgrammaAsciugatrici();
-            break;
-        case 5:
-            lavanderia.Incasso();
-            break;
-        default:
-            fine = true;
-            break;
+        lavatrici = new Lavatrice[5];
+        asciugatrici = new Asciugatrice[5];
+        for (int i = 0; i < 5; i++)
+        {
+            lavatrici[i] = new Lavatrice("Lavatrice" + (i + 1));
+            asciugatrici[i] = new Asciugatrice("Asciugatrice" + (i + 1));
+        }
     }
-} while (!fine);
+    private Lavatrice[] lavatrici;
+    private Asciugatrice[] asciugatrici;
 
-
+    public void StatoMacchine()
+    {
+        Console.WriteLine("Stato:");
+        for (int i = 0; i < lavatrici.Length; i++)
+        {
+            string statoLavatrice;
+            if (lavatrici[i].ControlloStato())
+                statoLavatrice = "Vuota";
+            else
+                statoLavatrice = "In esecuzione";
+            string statoAsciugatrice;
+            if (asciugatrici[i].ControlloStato())
+                statoAsciugatrice = "Vuota";
+            else
+                statoAsciugatrice = "In esecuzione";
+            Console.WriteLine(lavatrici[i].Nome + ": " + statoLavatrice);
+            Console.WriteLine(asciugatrici[i].Nome + ": " + statoAsciugatrice);
+        }
+    }
+    public void DettagliMacchina(string macchina, int numero)
+    {
+        
+        Console.WriteLine("Dettagli:");
+        if (macchina == "lavatrice")
+            lavatrici[numero - 1].DettagliMacchina();
+        else
+            asciugatrici[numero - 1].DettagliMacchina();
+    }
+    public void Incasso()
+    {
+        
+        Console.WriteLine("Incassi:");
+        double incassoTotale = 0;
+        for (int i = 0; i < lavatrici.Length; i++)
+        {
+            Console.WriteLine(lavatrici[i].Nome + ": " + lavatrici[i].Incasso() + "$");
+            Console.WriteLine(asciugatrici[i].Nome + ": " + asciugatrici[i].Incasso() + "$");
+            incassoTotale = incassoTotale + lavatrici[i].Incasso() + asciugatrici[i].Incasso();
+        }
+        Console.WriteLine("Totale: " + incassoTotale + "$");
+    }
+    public void ProgrammaLavaggio()
+    {
+        for (int i = 0; i < lavatrici.Length; i++)
+        {
+            if (lavatrici[i].ControlloStato())
+            {
+                lavatrici[i].NuovoLavaggio();
+                break;
+            }
+        }
+    }
+    public void ProgrammaAsciugatrici()
+    {
+        for (int i = 0; i < asciugatrici.Length; i++)
+        {
+            if (asciugatrici[i].ControlloStato())
+            {
+                asciugatrici[i].NuovaAsciugatura();
+            }
+        }
+    }
+}
